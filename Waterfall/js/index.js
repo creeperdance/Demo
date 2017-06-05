@@ -10,16 +10,101 @@ $(function() {
 	var ipages = 0;
 	var dflag = true;
 	//设置图片项列数及容器宽度
-	img_cells = Math.floor($(window).innerWidth() / item_width);
-	oContainer.css('width', img_cells * item_width - img_space);
+	function setCells() {
+		img_cells = Math.floor($(window).innerWidth() / item_width);
+		oContainer.css('width', img_cells * item_width - img_space);
+	}
+	setCells();
 	//初始化arrLeft,arrTop
 	for(var i = 0; i < img_cells; i++) {
 		arrTop.push(0);
 		arrLeft.push(i * item_width);
 	}
 
+	//加载图片数据，使用jsonp，数据来源于百度图片(关键字：千与千寻),解决跨域
+	function getData() {
+		if(dflag) {
+			dflag = false;
+			$('#loading').show();
+			$.ajax({
+				url: imgUrl,
+				type: 'GET',
+				dataType: 'JSONP', 
+				success: function(data) {
+					$.each(data.data, function(index, obj) {
+						var imgURL = decodeURL(obj.objURL);
+						//console.log(imgURL);
+						oImg = $('<img />');
+						oImg.attr('src', imgURL);
+						oContainer.append(oImg);
+						var img_height = img_width / obj.width * obj.height;
+						oImg.css({
+							width: img_width,
+							height: img_height
+						});
+						var _index = getMin();
+
+						oImg.css({
+
+							left: arrLeft[_index],
+							top: arrTop[_index]
+						});
+
+						arrTop[_index] += img_height + 10;
+
+						$('#loading').hide();
+						dflag = true;
+					});
+
+				}
+			});
+		}
+	}
+	getData();
+	//滚动条，无限加载
+	$(window).scroll(function() {;
+		var iheight = $(window).scrollTop() + $(window).innerHeight();
+		var oheight = arrTop[getMin()];
+		//document.title = iheight + ":" + oheight + oContainer.offset().top
+		if(iheight > oheight + oContainer.offset().top) {
+			ipages++;
+			getData();
+		}
+	});
+	$(window).resize(function() {
+		setCells();
+		arrLeft = [];
+		arrTop = [];
+		for(var i = 0; i < img_cells; i++) {
+			arrTop.push(0);
+			arrLeft.push(i * item_width);
+		}
+		var imgs = oContainer.find('img');
+		var j=0;
+		imgs.each(function(){
+			j++;
+			var min_index = getMin();
+			$(this).animate({
+				left: arrLeft[min_index],
+				top: arrTop[min_index]
+			});
+			arrTop[min_index] += $(this).height() + 10;
+		});
+	});
+
+	function getMin() {
+		var _index = 0;
+		var min_top = arrTop[0];
+		for(var i = 0; i < arrTop.length; i++) {
+			if(arrTop[i] < min_top) {
+				_index = i;
+				min_top = arrTop[i];
+			}
+		}
+		return _index;
+	}
 	//百度图片，解密函数
-	function decodeURL (u){
+	function decodeURL(u) {
 		var f = {
 			w: "a",
 			k: "b",
@@ -59,7 +144,7 @@ $(function() {
 			AzdH3F: "/"
 		};
 
-		var url = u+"";
+		var url = u + "";
 
 		var h = /(_z2C\$q|_z&e3B|AzdH3F)/g;
 		var e = url.replace(h, function(t, e) {
@@ -68,69 +153,8 @@ $(function() {
 
 		var s = /([a-w\d])/g;
 		e = e.replace(s, function(t, e) {
-			return f[e] 
+			return f[e]
 		});
 		return e;
-	}
-	//加载图片数据，使用jsonp，数据来源于百度图片(关键字：千与千寻)
-	function getData() {
-		if(dflag) {
-			dflag = false;
-			$('#loading').show();
-			$.ajax({
-				url: imgUrl,
-				type: 'GET',
-				dataType: 'JSONP', //here
-				success: function(data) {
-					$.each(data.data, function(index, obj) {
-						var imgURL = decodeURL(obj.objURL);
-						//console.log(imgURL);
-						oImg = $('<img />');
-						oImg.attr('src', imgURL);
-						oContainer.append(oImg);
-						var img_height = img_width / obj.width * obj.height;
-						oImg.css({
-							width: img_width,
-							height: img_height
-						});
-						var _index = getMin();
-
-						oImg.css({
-
-							left: arrLeft[_index],
-							top: arrTop[_index]
-						});
-
-						arrTop[_index] += img_height + 10;
-
-						$('#loading').hide();
-						dflag = true;
-					});
-					
-				}
-			});
-		}
-	}
-	getData();
-	//滚动条，无限加载
-	$(window).scroll(function() {;
-		var iheight = $(window).scrollTop() + $(window).innerHeight();
-		var oheight = arrTop[getMin()];
-		//document.title = iheight + ":" + oheight + oContainer.offset().top
-		if(iheight > oheight + oContainer.offset().top) {
-			ipages++;
-			getData();
-		}
-	});
-	function getMin() {
-		var _index = 0;
-		var min_top = arrTop[0];
-		for(var i = 0; i < arrTop.length; i++) {
-			if(arrTop[i] < min_top) {
-				_index = i;
-				min_top = arrTop[i];
-			}
-		}
-		return _index;
 	}
 });
