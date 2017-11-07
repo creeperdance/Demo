@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas实现弹幕</title>
+</head>
+<body>
+    <div style="position:relative;width:500px;height:400px;margin:150px auto;">
+        <video width="500" height="400" controls>
+            <source src="http://www.w3school.com.cn/i/movie.mp4" type="video/mp4">
+            <source src="http://www.w3school.com.cn/i/movie.ogg" type="video/ogg">
+            您的浏览器不支持 video 标签。
+        </video>
+        <canvas id="canvas" width="500" height="400" style="position:absolute;top:0;left:0;">
+            您的浏览器不支持canvas标签。
+        </canvas>
+    </div>
+<script>
+    let canvas = document.getElementById('canvas'),
+        ctx = this.canvas.getContext('2d'),
+        textList = ['什么鬼','啊啦啦啦啦','233333333333333','嘻嘻','o(*￣︶￣*)o','达浪达浪....','233',
+            'xixiixixi','卡成PPT...','I am no one','Hello World','huohuo'],
+        barrageList = [];
+
+
+    function Barrage(text) {
+            this.x = 30 + Math.floor(Math.random()*(canvas.width - 50));
+            this.y = 30 + Math.floor(Math.random()*(canvas.height - 70));
+            this.moveX = 1 + Math.floor(Math.random()*3);
+            this.color = '#' + Math.floor(Math.random()*0xffffff).toString(16);
+            this.fontSize = 13 + Math.floor(Math.random()*10);
+            this.text = text;
+            this.draw = function() {
+                ctx.fillText(this.text,this.x,this.y);
+                ctx.fillStyle = this.color;
+                ctx.font= this.fontSize + 'px Georgia bold';
+            }
+    }
+
+    textList.forEach((text)=>{
+        let barrage = new Barrage(text);
+        barrageList.push(barrage);
+    });
+
+    function render() {
+        //清空当前画布
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        barrageList.forEach((b)=>{
+            b.x = b.x - b.moveX;
+            //如果超出边界，则从右边出现
+            if(b.x < 0) {
+                b.x =  canvas.width;
+            }
+            b.draw();
+        });
+        //重新绘制（让弹幕动起来...）
+        requestAnimationFrame(render);
+    }
+    render();
+</script>
+</body>
+</html>
