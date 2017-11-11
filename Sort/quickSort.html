@@ -1,0 +1,43 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>快速排序---Just for testing</title>
+</head>
+<body>
+    <script>
+        let nums = [11,3,54,45,43,100,88];
+        /**
+         * 快速排序原理：确定基数pos，两个辅助数组：小于放数组left，大于放数组right,递归直到数组长度为1
+         * 复杂度：最好情况和平均情况无差：都是 n+2(n/2+2(n/4+2(n/8+...))) =  n+(log(n))*n = O(nlog(n))
+         *         最坏情况：最坏情况的话是把每层递归都当成最坏情况来考虑（即每层划分都只比上层少一个）:n+(n-1)+(n-2)+... = O(n*n)
+         *
+         * 补充说明： 其实我最初的做法其实是:小于等于pos的放到数组left,大于放数组right，但这样做其实是有问题的，举例：当arr数组为[1,5,3]时递归就出不来了
+         * */
+
+        function quickSort(arr) {
+            if(arr.length < 2) {
+                return arr;
+            }
+            let len = arr.length,
+                pos = arr[Math.floor(len/2)],
+                left = [],
+                right = [];
+
+            for(var i =0;i < len;i++) {
+                if(arr[i] < pos) {
+                    left.push(arr[i]);
+                } else if(arr[i] > pos){
+                    right.push(arr[i]);
+                }
+            }	 
+            return quickSort(left).concat(pos).concat(quickSort(right));
+        }
+
+
+    </script>
+</body>
+</html>

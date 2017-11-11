@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>冒泡排序---Just for testing</title>
+</head>
+<body>
+
+<script>
+
+
+    /**
+     * 冒泡排序原理:在一次循环过程找出最轻（小）的元素，把它替换到最顶部（前面），这样最重（大）的元素就在底部（后面），因而冒泡得名
+     *
+     * 复杂度分析：平均、最好、最坏情况下都是：O(n*n),
+     * */
+    let nums = [11, 3, 54, 45, 43, 100, 88],
+        len = nums.length,
+        count = 1,
+        temp;
+
+    for (let i = 0; i < len; i++) {
+        for (let j = i + 1; j < len; j++) {
+            if (nums[i] > nums[j]) {
+                temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        console.log('外层循环第',count++,'次执行...')
+    }
+    console.log(nums);
+
+
+    /**
+     * 冒泡排序算法改进(改进是针对正序情况，使其最好情况达到O(n)复杂度)
+     * 原理：在内层循环不交换的情况下，数组已为排序状态，就可以停止继续没必要的操作了
+     * */
+
+    let nums2 = [1,3,5,6,7,8,9,234,76768],
+        isOk;
+
+    count = 1;
+    for (let i = 0; i < len; i++) {
+        isOk = true;
+        for (let j = i + 1; j < len; j++) {
+            if (nums[i] > nums[j]) {
+                temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                isOk = false;
+            }
+        }
+        console.log('外层循环第',count++,'次执行...')
+        if(isOk) {
+            break;
+        }
+    }
+    console.log(nums2);
+
+</script>
+</body>
+</html>

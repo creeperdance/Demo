@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>插入排序---Just for testing</title>
+</head>
+<body>
+
+<script>
+
+    /**
+     * 插入排序原理：插入排序有点像是打牌的时候，拿到一张牌，然后把它插入到已排序的手牌里，照着打牌的思路敲就行了
+     * 复杂度：平均、最坏情况下：O(n*n)
+     *         最好情况下(正序)：O(n)
+     * */
+
+    let nums = [11, 3, 54, 45, 43, 100, 88, 99, 44, 10],
+        len = nums.length,
+        pai,
+        count = 1;
+
+    //最优情况下的复杂度测试
+    //nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    for (let i = 0; i < len; i++) {
+        pai = nums[i];
+        let j = i - 1;
+        while (j >= 0 && pai < nums[j]) {
+            nums[j + 1] = nums[j];
+            j--;
+            console.log('内层循环第', count++, '次执行');
+        }
+        nums[j + 1] = pai;
+    }
+    console.log(nums);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>选择排序---Just for testing</title>
+</head>
+<body>
+
+<script>
+
+    /**
+     * 选择排序：每次循环选择出最小的元素放到前面
+     * 复杂度：平均、最好、最坏都是：O(n*n)
+     * */
+    let nums = [11, 3, 54, 45, 43, 100, 88],
+        len = nums.length,
+        min,
+        index,
+        temp;
+
+    for (let i = 0; i < len; i++) {
+        min = nums[i],
+            index = i;
+        for (let j = i + 1; j < len; j++) {
+            if (nums[j] < min) {
+                min = nums[j];
+                index = j;
+            }
+        }
+        temp = nums[i];
+        nums[i] = nums[index];
+        nums[index] = temp;
+    }
+    console.log(nums);
+</script>
+</body>
+</html>

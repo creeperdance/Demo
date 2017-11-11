@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>希尔排序---Just for testing</title>
+
+</head>
+<body>
+
+<script>
+    /**
+     * 希尔排序原理：取一个数d1<n作为增量（间隔），数组内间隔d1的元素组内元素分成一组，组内进行插入排序后修该增量d1，继续上述操作直至d1为1，对所有元素进行插入排序
+     * 希尔排序其实是对插入排序的改进，插入排序每次插入一张牌的时候，都要移动数组，希尔排序通过分组以减少这种移动
+     * */
+    let nums = [11, 83, 54, 9, 43, 88],
+        len = nums.length,
+        gap = Math.floor(len / 2),
+        pai;
+
+
+    //从下标为gap的元素开始，每次都与前一个元素做比较
+    while (gap > 0) {
+        console.log('gap:',gap)
+        for (let i = gap; i < len; i++) {
+            //同组进行插入排序
+            pai = nums[i],
+                j = i - gap;
+            while (j >= 0 && pai < nums[j]) {
+                nums[j + gap] = nums[j];
+                j -= gap;
+            }
+            nums[j + gap] = pai;
+        }
+        gap =  gap >1 ? (Math.ceil(gap / 2)) : 0;
+    }
+    console.log(nums);
+
+</script>
+</body>
+</html>

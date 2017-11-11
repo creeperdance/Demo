@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>归并排序---Just for testing</title>
+</head>
+<body>
+
+<script>
+    /**
+     * 归并排序原理：分治思想，不断将数组一分为二，最后再自下而上合并之
+     * 复杂度：平均，最好、最坏都是：O(nlogn)
+     * */
+
+    function merge(left,right) {
+        let result = [];
+        while(left.length && right.length) {
+            if(left[0] > right[0]) {
+                result.push(right.shift());
+            } else {
+                result.push(left.shift());
+            }
+        }
+        return result.concat(left).concat(right);
+    }
+    function mergeSort(arr) {
+        let len = arr.length;
+        if(len < 2)
+            return arr;
+        let mid = Math.floor(len / 2),
+            left = arr.splice(0,mid),
+            right = arr;
+        return merge(mergeSort(left),mergeSort(right));
+    }
+    let nums = [11, 3, 54, 45, 43,  88,100];
+    console.log(mergeSort(nums));
+</script>
+</body>
+</html>
