@@ -12,9 +12,36 @@
 <script>
 
     /**
-     * 基数排序原理：嗯...基数排序是一个很有想法的排序算法，从个位起比较每个待排序数的每个位，把它们放到对应的（0-9）桶子里，
-     *
+     * 基数排序原理：从个位起比较每个待排序数的每个位，把它们放到对应的（0-9）桶子
+     * 复杂度：此处基数为10，(dight*(n+10))
      * */
+    let nums = [11, 3, 54, 45, 43, 10450, 88],
+        tong = [],
+        len = nums.length,
+        dight = 5,
+        dev = 1,
+        mod = 10;
+    for (let i = 0; i < dight; i++) {
+        for (let j = 0; j < len; j++) {
+            let num = parseInt((nums[j] % mod) / dev);
+            if (!tong[num]) {
+                tong[num] = [];
+            }
+            tong[num].push(nums[j]);
+        }
+        let count = 0,
+            tongLen = tong.length;
+        for (let j = 0; j < tongLen; j++) {
+            if (tong[j]) {
+                while (( value = tong[j].shift()) != null) {
+                    nums[count++] = value;
+                }
+            }
+        }
+        dev *= 10;
+        mod *= 10;
+    }
+    console.log(nums);
 
 </script>
 </body>
